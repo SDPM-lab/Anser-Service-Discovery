@@ -1,0 +1,33 @@
+{
+    "name": "sdpmlab/anser-service-discovery",
+    "description": "A PHP service discovery library for microservices.",
+    "keywords": [
+		"php",
+		"service-discovery",
+        "anser",
+        "workerman"
+	],
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "MonkenWu",
+            "homepage": "https://github.com/monkenWu"
+        },
+        {
+            "name": "Ping-yee",
+            "homepage": "https://github.com/ping-yee"
+        },
+        {
+            "name": "KAI",
+            "homepage": "https://github.com/kai890707"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "SDPMlab\\AnserServiceDiscovery\\": "src/"
+        }
+    },
+    "require": {}
+}
