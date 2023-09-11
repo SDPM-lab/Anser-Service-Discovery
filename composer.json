@@ -29,5 +29,10 @@
             "SDPMlab\\AnserServiceDiscovery\\": "src/"
         }
     },
-    "require": {}
+    "require": {
+        "workerman/workerman": "^4.1",
+        "dcarbone/php-consul-api": "^1.1",
+        "vlucas/phpdotenv": "^5.5",
+        "sdpmlab/anser-action": "^0.3.7"
+    }
 }
