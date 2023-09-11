@@ -13,6 +13,5 @@ services:
           - PHP_UPLOAD_MAX_FILESIZE=200M
           - XDEBUG_MODE=coverage
       volumes:
-        #   - './develop/Anser-Gateway:/app'
         - './develop/Anser-Gateway:/app'
         - './src:/src'

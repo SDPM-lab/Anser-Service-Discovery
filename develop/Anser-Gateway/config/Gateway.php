@@ -126,6 +126,7 @@ class Gateway
     public $serverWorkers= [
         \AnserGateway\Worker\GatewayWorker::class,
         // \AnserGateway\Worker\AutoloadFileMonitor::class,
+        \SDPMlab\AnserServiceDiscovery\ServiceDiscovery\ServiceDiscoverWorker::class
     ];
 
     /**

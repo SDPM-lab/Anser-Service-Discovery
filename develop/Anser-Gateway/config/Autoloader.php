@@ -27,6 +27,7 @@ class Autoloader
         'App\\Filters' => PROJECT_APP . DIRECTORY_SEPARATOR . 'HTTP' . DIRECTORY_SEPARATOR . 'Filters',
         'Test' => PROJECT_TEST,
         'Test\\Support' => PROJECT_TEST . DIRECTORY_SEPARATOR . '_support',
+        'SDPMlab\\AnserServiceDiscovery' => PROJECT_ROOT . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "src" .DIRECTORY_SEPARATOR
     ];
 
 }
