@@ -12,6 +12,13 @@ class ServiceDiscoveryConfig
     protected static $client;
 
     /**
+     * 已完成實例化的Consul設定
+     *
+     * @var \DCarbone\PHPConsulAPI\Config
+     */
+    protected static $consulConfig;
+
+    /**
      * 需要被探索的服務名稱
      *
      * @var array<string>
@@ -176,15 +183,19 @@ class ServiceDiscoveryConfig
      */
     public static function getConsulConfig(): \DCarbone\PHPConsulAPI\Config
     {
-        $config = self::getDefaultConfig();
+        if(!self::$consulConfig instanceof \DCarbone\PHPConsulAPI\Config) {
+            $config = self::getDefaultConfig();
 
-        $config["HttpClient"] = \SDPMlab\AnserServiceDiscovery\ServiceDiscovery\Client::getHttpClient();
-
-        return  new \DCarbone\PHPConsulAPI\Config($config);
+            $config["HttpClient"] = \SDPMlab\AnserServiceDiscovery\ServiceDiscovery\Client::getHttpClient();
+    
+            self::$consulConfig = new \DCarbone\PHPConsulAPI\Config($config);
+        }
+        
+        return self::$consulConfig;
     }
 
     /**
-     *
+     * 設定需被訪問的服務名稱
      *
      * @param array<string> $defaultServiceGroup
      * @return void
@@ -194,7 +205,12 @@ class ServiceDiscoveryConfig
         self::$defaultServiceGroup = $defaultServiceGroup;
     }
 
-    public static function getDefaultServiceGroup()
+    /**
+     * 取得已設定將被訪問的服務名稱
+     *
+     * @return array
+     */
+    public static function getDefaultServiceGroup(): array
     {
         return self::$defaultServiceGroup;
     }
