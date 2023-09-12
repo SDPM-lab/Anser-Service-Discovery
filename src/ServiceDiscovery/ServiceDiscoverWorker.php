@@ -54,7 +54,7 @@ class ServiceDiscoverWorker extends WorkerRegistrar
             Timer::add(
                 ServiceDiscoveryConfig::$ReloadTime,
                 static function () use ($discoveryService, $discoveryServiceGroup) {
-                    $discoveryService->setDiscoveryService($discoveryServiceGroup);
+                    $discoveryService->doServiceDiscovery();
                 }
             );
         };

@@ -22,6 +22,8 @@ ServiceDiscoveryConfig::setDefaultConfig([
 ServiceDiscoveryConfig::setDefaultServiceGroup([
     'Product-Service1',
     'Order-Service1',
+    // 'Payment-Service1'
+    'DDD'
 ]);
 
 ?>

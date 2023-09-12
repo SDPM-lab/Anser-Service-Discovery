@@ -5,13 +5,6 @@ namespace SDPMlab\AnserServiceDiscovery\Config;
 class ServiceDiscoveryConfig
 {
     /**
-     * Guzzle7 HTTP Client Instance
-     *
-     * @var \GuzzleHttp\Client
-     */
-    protected static $client;
-
-    /**
      * 已完成實例化的Consul設定
      *
      * @var \DCarbone\PHPConsulAPI\Config

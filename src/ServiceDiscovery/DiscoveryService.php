@@ -12,19 +12,17 @@ use SDPMlab\Anser\Service\ConcurrentAction;
 class DiscoveryService
 {
     /**
-     * consul 實體
-     *
-     * @var \DCarbone\PHPConsulAPI\Consul
-     */
-    protected $consulClient;
-
-    /**
      * 從Consul Server探索的可訪問服務
      *
-     * @var array<string,array<\SDPMlab\Anser\Service\ServiceSettings>>
+     * @var array<string,array<string,string>>
      */
     protected static array $services = [];
 
+    /**
+     * 用於比對的可訪問服務，參照$service屬性
+     *
+     * @var array
+     */
     protected static array $verifyServices = [null];
 
     public function __construct()
@@ -35,8 +33,26 @@ class DiscoveryService
         } else {
             ServiceDiscoveryConfig::setDefaultConfig();
         }
+    }
 
-        $this->consulClient = Client::getConsulClient();
+    /**
+     * 執行服務探索步驟
+     * 於ServiceDiscoverWorker被呼叫
+     *
+     * @return void|null
+     */
+    public function doServiceDiscovery()
+    {
+        $serviceGroup = ServiceDiscoveryConfig::getDefaultServiceGroup();
+        $this->setDiscoveryService($serviceGroup);
+
+        if(!$this->isNeedToUpdateServiceList()){
+            return;
+        }
+
+        var_dump("update Service");
+        // do update anser-action service list
+
     }
 
     /**
@@ -47,9 +63,9 @@ class DiscoveryService
      */
     public function getService($serviceName): \DCarbone\PHPConsulAPI\Health\ServiceEntriesResponse
     {
-        $service = $this->consulClient->Health()->Service($serviceName, '', true);
+            $service = Client::getConsulClient()->Health()->Service($serviceName, '', true);
         
-        return $service;
+            return $service;
     }
 
     /**
@@ -64,20 +80,17 @@ class DiscoveryService
         foreach ($servicesGroup as $serviceName) {
 
             $services =  $this->getService($serviceName)->getValue();
+            
+            if(empty($services) || count($services) == 0){
+                continue;
+            }
 
             if(count($services) > 1) {
                 $this->setServices($services);
             } else {
                 $this->setService($services);
             }
-        }
-
-        if (self::$services !== self::$verifyServices) {
-            $this->cleanVerifyServices();
-            self::$verifyServices = self::$services;
-
-            // do 真實的service list 更新 ....
-            var_dump("Service List執行更新開始");
+            
         }
     }
 
@@ -146,13 +159,38 @@ class DiscoveryService
         ];
     }
 
-    public function cleanServices(): void
+    /**
+     * 確認是否需要更新真實的服務列表
+     * 如新一輪的服務探索取得的服務與原有不一致，則進行ServiceList更新
+     * @return boolean
+     */
+    protected function isNeedToUpdateServiceList(): bool
+    {
+        if (self::$services !== self::$verifyServices) {
+            $this->cleanVerifyServices();
+            self::$verifyServices = self::$services;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 重置$service屬性
+     *
+     * @return void
+     */
+    protected function cleanServices(): void
     {
         self::$services = [];
     }
 
-    public function cleanVerifyServices(): void
+    /**
+     * 重置$verifyServices屬性
+     *
+     * @return void
+     */
+    protected function cleanVerifyServices(): void
     {
-        self::$verifyServices = [];
+        self::$verifyServices = [null];
     }
 }
